@@ -2,14 +2,18 @@ FROM debian:bullseye
 
 # update and upgrade package manager
 # install mariadb
-RUN RUN apt-get update -y && apt-get upgrade -y && \
+RUN apt-get update -y && apt-get upgrade -y && \
 	apt-get install -y mariadb-server
 
 # copy mariadb conf file
 COPY conf/mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 
+# copy the script
+COPY mdb_init.sh /usr/local/bin/mdb_init.sh
+RUN chmod +x /usr/local/bin/mdb_init.sh
+
 # open port req by subj
 EXPOSE 3306
 
 # launch && setup mariadb
-CMD ["./mdb_init.sh"]
+CMD ["/usr/local/bin/mdb_init.sh"]

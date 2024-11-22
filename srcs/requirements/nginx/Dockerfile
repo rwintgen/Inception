@@ -3,10 +3,10 @@ FROM debian:bullseye
 # update and upgrade package manager
 # install nginx && openssl
 RUN apt-get update -y && apt-get upgrade -y && \
-	apt install -y nginx OpenSSL
+	apt install -y nginx openssl
 
-# create dir to store nginx files
-RUN mkdir -p /var/run/nginx
+# create dir to store nginx certificate
+RUN mkdir -p /etc/nginx/ssl
 
 # create a self-signed cert
 # do not set a passphrase
@@ -16,7 +16,7 @@ RUN openssl req -x509 \
 	-nodes \
 	-out /etc/nginx/ssl/inception.crt \
 	-keyout /etc/nginx/ssl/inception.key \
-	-subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=login.42.fr/UID=login"
+	-subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=rwintgen.42.fr/UID=rwintgen"
 
 # copy nginx conf file
 COPY conf/nginx.conf /etc/nginx/nginx.conf
